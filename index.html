@@ -14,7 +14,7 @@
 		var idx=0;
 		$('#btn').off('click').on('click',function(){
 			idx++;
-			openModal('tip---tip---tip','',idx%2,function(){alert('hasCancel')});
+			Modal.api.openModal('tip---tip---tip','',idx%2,function(){alert('hasCancel')});
 		});
 		// $('#btn').on('click',function(){
 		// 	openModal('tip---tip---tip','modal-size-lg');
