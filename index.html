@@ -7,14 +7,17 @@
 	<link rel="stylesheet" href="modal.css">
 <script type="text/javascript" src="http://gc.kis.v2.scr.kaspersky-labs.com/1D42C2C6-1753-944C-A167-A3A030FA4CA4/main.js" charset="UTF-8"></script></head>
 <body>
-	<button id="btn" style="width:240px;height:50px;">Modal.api.openModal(sHtml,sClassName,hasCancel,sureFn)</button>
+	<button id="btn">双按钮(请点击)</button>
 	<script src="jquery.min.js"></script>
 	<script src="modal.js"></script>
 	<script>
 		var idx=0;
+		var a=['双按钮','单按钮'];
 		$('#btn').off('click').on('click',function(){
 			idx++;
-			Modal.api.openModal('tip---tip---tip','',idx%2,function(){alert('hasCancel')});
+			var b=!!idx%2;
+			$(this).html(a[idx%2]);
+			Modal.api.openModal('tip---tip---tip','',b,function(){alert('hasCancel')});
 		});
 		// $('#btn').on('click',function(){
 		// 	openModal('tip---tip---tip','modal-size-lg');
