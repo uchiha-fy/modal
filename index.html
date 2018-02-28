@@ -5,6 +5,17 @@
 	<title>Document</title>
 	<link rel="stylesheet" href="base.css">
 	<link rel="stylesheet" href="modal.css">
+	<style>
+		#btn{
+			position:absolute;
+			left:0;right:0;top:0;bottom:0;
+			margin:auto;
+			width:120px;
+			height:40px;
+			font-size:16px;
+			font-family:'Microsoft YaHei';
+		}
+	</style>
 <script type="text/javascript" src="http://gc.kis.v2.scr.kaspersky-labs.com/1D42C2C6-1753-944C-A167-A3A030FA4CA4/main.js" charset="UTF-8"></script></head>
 <body>
 	<button id="btn">双按钮(请点击)</button>
@@ -15,7 +26,6 @@
 		var a=['双按钮','单按钮'];
 		$('#btn').off('click').on('click',function(){
 			idx++;
-			var b=!!idx%2;
 			$(this).html(a[idx%2]);
 			Modal.api.openModal('tip---tip---tip','',b,function(){alert('hasCancel')});
 		});
