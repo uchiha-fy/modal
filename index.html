@@ -7,25 +7,14 @@
 	<link rel="stylesheet" href="modal.css">
 <script type="text/javascript" src="http://gc.kis.v2.scr.kaspersky-labs.com/1D42C2C6-1753-944C-A167-A3A030FA4CA4/main.js" charset="UTF-8"></script></head>
 <body>
-	<button id="btn" style="width:240px;height:50px;">openModal(sHtml,sClassName)</button>
-	<div id="modal">
-		<div class="modal-bg"></div>
-		<div id="modalContent" class="modal-content">
-			<div class="modal-title">
-				<p id="modalTitle">温馨提示</p><!-- wenxintishi -->
-				<span class="modal-close">x</span>
-			</div>
-			<div class="modal-text">
-				<p id="modalTip" class="modal-tip">tip</p>
-			</div>
-			<span class="modal-sure">确定</span><!-- queding -->
-		</div>
-	</div>
+	<button id="btn" style="width:240px;height:50px;">openModal(sHtml,sClassName,hasCancel,sureFn)</button>
 	<script src="jquery.min.js"></script>
 	<script src="modal.js"></script>
 	<script>
-		$('#btn').on('click',function(){
-			openModal('tip---tip---tip');
+		var idx=0;
+		$('#btn').off('click').on('click',function(){
+			idx++;
+			openModal('tip---tip---tip','',idx%2,function(){alert('hasCancel')});
 		});
 		// $('#btn').on('click',function(){
 		// 	openModal('tip---tip---tip','modal-size-lg');
