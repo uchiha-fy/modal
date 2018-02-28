@@ -1,19 +1,55 @@
-$(function(){
-	var $modal=$('#modal'),
-		$modalTip=$('#modalTip');
-	function closeModal(){
-		$modal.stop(true).fadeOut(300,function(){
-			$modalTip.html('');
-		});
-	}
-	function openModal(sHtml,sClassName){
-		if(sClassName)
-			$modal.find('#modalContent').attr('class','modal-content '+sClassName);
-		$modalTip.html(sHtml);
-		$modal.stop(true).fadeIn(300);
-	}
-	$modal.find('.modal-close').on('click',closeModal);
-	$modal.find('.modal-sure').on('click',closeModal);
-	window.closeModal=closeModal;
-	window.openModal=openModal;
+$(function () {
+    var self={
+        dom:{},
+        api:{}
+    };
+
+    // 创建dom
+    self.dom.modal=$('<div></div>',{'id':'modal'}).appendTo($('body'));
+    self.dom.bg=$('<div></div>',{'class':'modal-bg'}).appendTo(self.dom.modal);
+    self.dom.ctx=$('<div></div>',{'class':'modal-content','id':'modalContent'}).appendTo(self.dom.modal);
+    self.dom.close=$('<span></span>',{'class':'modal-close'}).html('x');
+    self.dom.title=$('<div></div>',{'class':'modal-title'}).appendTo(self.dom.ctx).append($('<p></p>',{'id':'modalTitle'}).html('温馨提示')).append(self.dom.close);
+    self.dom.tip=$('<p></p>',{'id':'modalTip','class':'modal-tip'});
+    self.dom.text=$('<div></div>',{'class':'modal-text'}).appendTo(self.dom.ctx).append(self.dom.tip);
+    self.dom.sure=$('<span></span>',{'class':'modal-button modal-sure'}).html('确定');
+    self.dom.cancel=$('<span></span>',{'class':'modal-button modal-cancel'}).html('取消');
+    self.dom.buttons=$('<div></div>',{'class':'modal-buttons'}).appendTo(self.dom.ctx).append(self.dom.cancel).append(self.dom.sure);
+
+    // 引入css
+    $('<link>').attr({rel:'stylesheet',type:'text/css',href:'modal/modal.css?v=0.0.1'}).appendTo($('head'));
+
+    // 配置api
+    self.api.closeModal=function(){
+        self.dom.modal.stop(true).fadeOut(500,function(){
+            self.dom.tip.html('');
+        });
+    }
+    // 绑定事件
+    // 默认隐藏取消按钮
+    self.dom.close.on('click',self.api.closeModal);
+    self.dom.cancel.on('click',self.api.closeModal).hide();
+    self.dom.sure.on('click',self.api.closeModal);
+
+    self.api.openModal=function(sHtml, sClassName, hasCancel, sureFn){
+        if(sClassName)
+            self.dom.modal.find('#modalContent').attr('class', 'modal-content ' + sClassName);
+        if(hasCancel){
+            self.dom.cancel.show();
+            self.dom.buttons.addClass('double');
+            self.dom.sure.off('click').on('click',function(){
+                sureFn&&sureFn();
+                self.api.closeModal();
+            });
+        }else{
+            self.dom.cancel.hide();
+            self.dom.buttons.removeClass('double');
+            self.dom.sure.off('click').on('click',self.api.closeModal);
+        }
+        self.dom.tip.html(sHtml);
+        self.dom.modal.stop(true).fadeIn(500);
+    }
+
+    // 提供接口(全局 Modal)
+    window.Modal = self;
 });
