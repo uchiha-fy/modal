@@ -40,28 +40,27 @@ $(function () {
     }
     self.api.openModal=function(sHtml, style, hasCancel, sureFn){ // style可以为类名或{width:xxx}
         self.api.resetStyle();
-        switch(typeof style){
-            case 'string':
-                if(style.trim()!==''){
+        if(style)
+            switch(typeof style){
+                case 'string':
                     var iW;
                     self.dom.tip.addClass(style);
                     iW=self.dom.tip.css('width');
                     if(iW>self.style.width){
                         self.dom.ctx.width(iW);
                     }
-                }
-                break;
-            case 'object':
-                if(JSON.stringify(style)!=="{}"){
-                    self.dom.tip.css(style);
-                    if(style.width&&style.width>self.style.width){
-                        self.dom.ctx.width(style.width);
+                    break;
+                case 'object':
+                    if(JSON.stringify(style)!=="{}"){
+                        self.dom.tip.css(style);
+                        if(style.width&&style.width>self.style.width){
+                            self.dom.ctx.width(style.width);
+                        }
                     }
-                }
-                break;
-            default:
-                console.log('openModal实参style输入有误！');
-        }
+                    break;
+                default:
+                    console.log('openModal实参style输入有误！');
+            }
         if(hasCancel){
             self.dom.cancel.show();
             self.dom.buttons.addClass('double');
