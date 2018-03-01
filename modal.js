@@ -1,13 +1,16 @@
 $(function () {
     var self={
         dom:{},
-        api:{}
+        api:{},
+        style:{     // self.dom.ctx 的样式
+            width:220
+        }
     };
 
     // 创建dom
     self.dom.modal=$('<div></div>',{'id':'modal'}).appendTo($('body'));
     self.dom.bg=$('<div></div>',{'class':'modal-bg'}).appendTo(self.dom.modal);
-    self.dom.ctx=$('<div></div>',{'class':'modal-content','id':'modalContent'}).appendTo(self.dom.modal);
+    self.dom.ctx=$('<div></div>',{'class':'modal-content','id':'modalContent'}).appendTo(self.dom.modal).css(self.style);
     self.dom.close=$('<span></span>',{'class':'modal-close'}).html('x');
     self.dom.title=$('<div></div>',{'class':'modal-title'}).appendTo(self.dom.ctx).append($('<p></p>',{'id':'modalTitle'}).html('温馨提示')).append(self.dom.close);
     self.dom.tip=$('<p></p>',{'id':'modalTip','class':'modal-tip'});
@@ -31,9 +34,34 @@ $(function () {
     self.dom.cancel.on('click',self.api.closeModal).hide();
     self.dom.sure.on('click',self.api.closeModal);
 
-    self.api.openModal=function(sHtml, sClassName, hasCancel, sureFn){
-        if(sClassName)
-            self.dom.modal.find('#modalContent').attr('class', 'modal-content ' + sClassName);
+    self.api.resetStyle=function(){
+        self.dom.tip.attr({'class':'modal-tip','style':''});
+        self.dom.ctx.attr({'style':''}).css(self.style);
+    }
+    self.api.openModal=function(sHtml, style, hasCancel, sureFn){ // style可以为类名或{width:xxx}
+        self.api.resetStyle();
+        switch(typeof style){
+            case 'string':
+                if(style.trim()!==''){
+                    var iW;
+                    self.dom.tip.addClass(style);
+                    iW=self.dom.tip.css('width');
+                    if(iW>self.style.width){
+                        self.dom.ctx.width(iW);
+                    }
+                }
+                break;
+            case 'object':
+                if(JSON.stringify(style)!=="{}"){
+                    self.dom.tip.css(style);
+                    if(style.width&&style.width>self.style.width){
+                        self.dom.ctx.width(style.width);
+                    }
+                }
+                break;
+            default:
+                console.log('openModal实参style输入有误！');
+        }
         if(hasCancel){
             self.dom.cancel.show();
             self.dom.buttons.addClass('double');
