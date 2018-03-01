@@ -23,9 +23,14 @@ $(function () {
     $('<link>').attr({rel:'stylesheet',type:'text/css',href:'modal/modal.css?v=0.0.1'}).appendTo($('head'));
 
     // 配置api
+    self.api.resetStyle=function(){
+        self.dom.tip.attr({'class':'modal-tip','style':''});
+        self.dom.ctx.attr({'style':''}).css(self.style);
+    }
     self.api.closeModal=function(){
         self.dom.modal.stop(true).fadeOut(500,function(){
             self.dom.tip.html('');
+            self.api.resetStyle();
         });
     }
     // 绑定事件
@@ -33,13 +38,8 @@ $(function () {
     self.dom.close.on('click',self.api.closeModal);
     self.dom.cancel.on('click',self.api.closeModal).hide();
     self.dom.sure.on('click',self.api.closeModal);
-
-    self.api.resetStyle=function(){
-        self.dom.tip.attr({'class':'modal-tip','style':''});
-        self.dom.ctx.attr({'style':''}).css(self.style);
-    }
+    
     self.api.openModal=function(sHtml, style, hasCancel, sureFn){ // style可以为类名或{width:xxx}
-        self.api.resetStyle();
         if(style)
             switch(typeof style){
                 case 'string':
